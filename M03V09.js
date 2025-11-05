@@ -23,6 +23,7 @@ class LinkedList {
       this.tail = newNode;
     }
     this.length++;
+    return this;
   }
 
   prepend(value) {
@@ -37,6 +38,7 @@ class LinkedList {
       this.head = newNode;
     }
     this.length++;
+    return this;
   }
 
   insert(index, value) {
@@ -52,39 +54,28 @@ class LinkedList {
     if (index === this.length) {
       return this.append(value);
     }
-    //if the insert is in the middle
-    //find the leading node
-    let count = 0;
-    let leadingNode = this.head;
-
-    while (count !== index - 1) {
-      leadingNode = leadingNode.next;
-      count++;
-    }
-    console.log(leadingNode);
-
-    //     Node {
-    //   value: 20,
-    //   next: Node { value: 10, next: Node { value: 1, next: [Node] } }
-    // }
-    //
+    const leadingNode = this._traverseToIndex(index - 1);
+    // console.log(leadingNode);
+    const holdingNode = leadingNode.next;
+    const newNode = new Node(value);
+    leadingNode.next = newNode;
+    newNode.next = holdingNode;
+    this.length++;
   }
 
   remove() {}
+  //private helper method
+  _traverseToIndex(index) {
+    let count = 0;
+    let currentNode = this.head;
 
-  // print() {
-  //   let currentNode = this.head;
-  //   while (currentNode !== null) {
-  //     console.log(currentNode.value);
-  //     currentNode = currentNode.next;
-  //   }
-  // }
-  //output
-  // 1
-  // 2
-  // 3
-  // 4
-  //or
+    while (count !== index) {
+      currentNode = currentNode.next;
+      count++;
+    }
+    return currentNode;
+  }
+
   print() {
     const arr = [];
     let currentNode = this.head;
@@ -93,20 +84,11 @@ class LinkedList {
       currentNode = currentNode.next;
     }
     console.log(arr.join("->"), "-> null");
-    //output
-    // 1. appened 1->2->3->4 -> null
-    // 2.prepend 30->20->10->1->2->3->4 -> null
   }
 }
 const linkedList = new LinkedList();
-linkedList.append(1);
-linkedList.append(2);
-linkedList.append(3);
-linkedList.append(4);
+linkedList.append(0).append(1).append(2).append(3);
 
-linkedList.prepend(10);
-linkedList.prepend(20);
-linkedList.prepend(30);
-linkedList.insert(2, 100);
+linkedList.insert(2, 200);
 
 linkedList.print();
